@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name" translatable="false">isainAndriod</string>
+    <string name="btnPlay">Play</string>
+    <string name="btnRanking">Ranking</string>
+    <string name="btnSetting">Setting</string>
+    <string name="btnAbout">About</string>
+    <string name="Name">Name</string>
+    <string name="Email">Email</string>
+    <string name="aSetting">Setting Activity</string>
+    <string name="edName">Nombre</string>
+    <string name="edEmail">Correo</string>
+    <string name="textView2">New App Android Isain!</string>
+    <string name="aPlay">PLAY ACTIVITY</string>
+    <string name="aRanking">RANKING ACTIVITY</string>
+    <string name="resume">Initial project of Android with basic utilities of the first training unit.</string>
+    <string name="aAbout">Activity About</string>
+    <string name="btnMap">Map</string>
+</resources>

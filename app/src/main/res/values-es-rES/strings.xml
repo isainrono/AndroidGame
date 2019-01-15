@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">isainAndriod</string>
+    <string name="btnPlay">Jugar</string>
+    <string name="btnRanking">Pisiciones</string>
+    <string name="btnSetting">Configuracion</string>
+    <string name="btnAbout">Informacion</string>
+    <string name="Name">Nombre</string>
+    <string name="Email">"Correo "</string>
+    <string name="aSetting">Pantalla de Actividad</string>
+    <string name="edName">Nombre</string>
+    <string name="edEmail">Correo</string>
+    <string name="textView2">Nueva Aplicacion Android Isain!</string>
+    <string name="aPlay">PANTALLA DE JUEGO</string>
+    <string name="aRanking">PANTALLA DE POSICIONES</string>
+    <string name="resume">Projecto inical de Android con utilidades basicas de la primera unidad formativa.</string>
+    <string name="aAbout">Pantalla de Informacion</string>
+    <string name="btnMap">Mapa</string>
+</resources>
