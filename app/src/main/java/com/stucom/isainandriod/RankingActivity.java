@@ -1,9 +1,11 @@
 package com.stucom.isainandriod;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +54,7 @@ public class RankingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ranking);
 
         if (MyToken.getInstance(context).getAuthToken() != null) {
+            Log.d("isain", "Position=" + MyToken.getInstance(context).getAuthToken());
             Toast.makeText(RankingActivity.this, "token"+ MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_SHORT).show();
 
             textView = findViewById(R.id.namePlayer);
@@ -140,6 +144,7 @@ public class RankingActivity extends AppCompatActivity {
         }
     }
 
+
     class PlayerAdapter extends RecyclerView.Adapter<PlayerViewHolder> {
 
         private List<Player> players;
@@ -154,11 +159,12 @@ public class RankingActivity extends AppCompatActivity {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.player_item, parent, false);
             return new PlayerViewHolder(view);
         }
+
         @Override
         public void onBindViewHolder(@NonNull PlayerViewHolder viewHolder, int position) {
             // agregar el setonclip listerner en el adapter y despues hacer metodo de alertDialog
             Log.d("isain", "Position=" + position);
-            Player player = players.get(position);
+            final Player player = players.get(position);
             // Falta ordenar por orden
             if(!player.getName().equalsIgnoreCase("User")){
                 viewHolder.namePlayer.setText(player.getName());
@@ -166,6 +172,17 @@ public class RankingActivity extends AppCompatActivity {
                 viewHolder.DataPlayer.setText(totalScore2);
                 Picasso.get().load(player.getImage()).into(viewHolder.ImagePlayer);
             }
+
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(RankingActivity.this, Message.class);
+                    intent.putExtra("playerId", player.getId());
+                    intent.putExtra("playerName", player.getName());
+                    intent.putExtra("playerImage", player.getImage());
+                    startActivity(intent);
+                }
+            });
 
         }
 

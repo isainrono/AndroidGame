@@ -15,4 +15,5 @@
     <string name="resume">Initial project of Android with basic utilities of the first training unit.</string>
     <string name="aAbout">Activity About</string>
     <string name="btnMap">Map</string>
+    <string name="title_activity_player_message">player_message</string>
 </resources>
