@@ -151,6 +151,7 @@ public class RankingActivity extends AppCompatActivity {
 
         PlayerAdapter(List<Player> players) {
             super();
+            // Collections.sort(Players, new Player.comparator);
             this.players = players;
         }
 
@@ -164,7 +165,9 @@ public class RankingActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull PlayerViewHolder viewHolder, int position) {
             // agregar el setonclip listerner en el adapter y despues hacer metodo de alertDialog
             Log.d("isain", "Position=" + position);
+
             final Player player = players.get(position);
+            Log.d("isain", "id=" + player.getId());
             // Falta ordenar por orden
             if(!player.getName().equalsIgnoreCase("User")){
                 viewHolder.namePlayer.setText(player.getName());
