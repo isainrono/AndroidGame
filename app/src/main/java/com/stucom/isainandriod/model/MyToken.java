@@ -10,8 +10,10 @@ import static android.content.Context.MODE_PRIVATE;
 public class MyToken {
 
     private static MyToken instance;
+    private static Player myPlayer;
     public String authToken;
     public Context context;
+
 
 
     public MyToken(Context context) {
@@ -38,5 +40,19 @@ public class MyToken {
         }
         return instance;
     }
+
+    public static void setPlayerInformation(Player player){
+        if (myPlayer == null) {
+            myPlayer = player;
+        }
+    }
+
+    public static Player getPlayer(){
+        return myPlayer;
+    }
+
+
+
+
 
 }

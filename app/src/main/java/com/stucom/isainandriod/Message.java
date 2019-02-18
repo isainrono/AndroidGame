@@ -140,7 +140,7 @@ public class Message extends AppCompatActivity {
         Log.d("isain", "este es el id sin pasarlo" + playerId);
         final String URL = "https://api.flx.cat/dam2game/message/" + playerId;
 
-        StringRequest request = new StringRequest(Request.Method.POST, URL,
+        StringRequest request = new StringRequest(Request.Method.PUT, URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -171,14 +171,12 @@ public class Message extends AppCompatActivity {
                          }) {
                              @Override protected Map<String, String> getParams() {
                                  Map<String, String> params = new HashMap<>();
-                                 params.put("token", MyToken.getInstance(Message.this).authToken);
+                                 params.put("token", MyToken.getInstance(context).getAuthToken());
                                  params.put("text", message.getText().toString());
                                  return params;
                              }
                          };
                          MyVolley.getInstance(this).add(request);
-
-
     }
 
 
