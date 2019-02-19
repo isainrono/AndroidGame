@@ -53,8 +53,8 @@ public class RankingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
 
-        if (MyToken.getInstance(context).getAuthToken() != null) {
             Log.d("isain", "Position=" + MyToken.getInstance(context).getAuthToken());
+            Log.d("isainaqui", "imagen=" + MyToken.getPlayer().getId());
             Toast.makeText(RankingActivity.this, "token"+ MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_SHORT).show();
 
             textView = findViewById(R.id.namePlayer);
@@ -71,10 +71,7 @@ public class RankingActivity extends AppCompatActivity {
             });
 
 
-        } else {
-            Intent intent = new Intent(RankingActivity.this, SettingActivity.class);
-            startActivity(intent);
-        }
+
     }
 
     @Override
@@ -176,16 +173,33 @@ public class RankingActivity extends AppCompatActivity {
                 Picasso.get().load(player.getImage()).into(viewHolder.ImagePlayer);
             }
 
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(RankingActivity.this, Message.class);
-                    intent.putExtra("playerId", player.getId());
-                    intent.putExtra("playerName", player.getName());
-                    intent.putExtra("playerImage", player.getImage());
-                    startActivity(intent);
-                }
-            });
+            if(MyToken.getPlayer().getId() == player.getId()){
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(RankingActivity.this,PlayerActivity.class);
+                        intent.putExtra("playerId", player.getId());
+                        intent.putExtra("playerName", player.getName());
+                        intent.putExtra("playerImage", player.getImage());
+                        intent.putExtra("totalScore", player.getLastScore());
+                        intent.putExtra("lastLevel", player.getLastLevel());
+                        startActivity(intent);
+                    }
+                });
+            } else {
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(RankingActivity.this, Message.class);
+                        intent.putExtra("playerId", player.getId());
+                        intent.putExtra("playerName", player.getName());
+                        intent.putExtra("playerImage", player.getImage());
+                        startActivity(intent);
+                    }
+                });
+            }
+
+
 
         }
 

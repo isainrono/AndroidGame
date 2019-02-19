@@ -42,9 +42,9 @@ public class MyToken {
     }
 
     public static void setPlayerInformation(Player player){
-        if (myPlayer == null) {
+
             myPlayer = player;
-        }
+
     }
 
     public static Player getPlayer(){
