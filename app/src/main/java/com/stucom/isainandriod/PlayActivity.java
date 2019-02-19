@@ -41,7 +41,6 @@ public class PlayActivity extends AppCompatActivity {
         level = findViewById(R.id.level);
         score = findViewById(R.id.score);
         bChange = findViewById(R.id.btnChangeDatas);
-        bShow = findViewById(R.id.btnShowInfo);
 
         bChange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,13 +51,6 @@ public class PlayActivity extends AppCompatActivity {
 
         Toast.makeText(PlayActivity.this, "token"+ MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_SHORT).show();
 
-        bShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PlayActivity.this, UserInformation.class);
-                startActivity(intent);
-            }
-        });
 
     }
 

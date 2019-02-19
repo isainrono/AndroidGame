@@ -43,7 +43,7 @@ public class firstMain extends AppCompatActivity {
 
         Context context = firstMain.this;
 
-        if(!MyToken.getInstance(context).equals(" ")) {
+        if(MyToken.getInstance(context).getAuthToken() != "") {
             downloadDatas();
             Toast.makeText(firstMain.this, "token"+ MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_SHORT).show();
 

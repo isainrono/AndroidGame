@@ -48,8 +48,13 @@ public class SettingActivity extends AppCompatActivity {
         edName = findViewById(R.id.edName);
         edEmail = findViewById(R.id.edEmail);
         imageView = findViewById(R.id.sImageUser);
+        Context context = SettingActivity.this;
 
-        downloadDatas();
+        if(MyToken.getInstance(context).getAuthToken() != ""){
+            downloadDatas();
+        }
+
+
         Button btnChangeDatas = findViewById(R.id.btnSaveChange);
         btnChangeDatas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,7 +252,7 @@ public class SettingActivity extends AppCompatActivity {
 
     public void downloadDatas() {
         Context context = SettingActivity.this;
-        final String URL = String.format("https://api.flx.cat/dam2game/user/22?token=" + MyToken.getInstance(context).getAuthToken());
+        final String URL = String.format("https://api.flx.cat/dam2game/user/"+ MyToken.getPlayer().getId() + "?token=" + MyToken.getInstance(context).getAuthToken());
 
         final StringRequest request = new StringRequest(
                 Request.Method.GET,
@@ -306,12 +311,23 @@ public class SettingActivity extends AppCompatActivity {
 
     @Override
     protected void onResume(){
+        Context context = SettingActivity.this;
         super.onResume();
         SharedPreferences prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         String name = prefs.getString("name", "");
         String email = prefs.getString("email", "");
-        edName.setText(name);
-        edEmail.setText(email);
+
+        if(MyToken.getInstance(context).getAuthToken() == ""){
+            edName.setText(name);
+            edEmail.setText(email);
+        } else {
+            edName.setText(MyToken.getPlayer().getName());
+            edEmail.setFocusable(false);
+            Button changes = findViewById(R.id.btnRegister);
+            changes.setEnabled(false);
+
+        }
+
 
 
     }

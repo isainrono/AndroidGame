@@ -36,6 +36,7 @@ import com.stucom.isainandriod.model.MyToken;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -148,7 +149,7 @@ public class RankingActivity extends AppCompatActivity {
 
         PlayerAdapter(List<Player> players) {
             super();
-            // Collections.sort(Players, new Player.comparator);
+            Collections.sort(players, new Player.customComparator());
             this.players = players;
         }
 

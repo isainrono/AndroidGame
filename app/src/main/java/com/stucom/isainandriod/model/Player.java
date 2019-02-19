@@ -2,6 +2,8 @@ package com.stucom.isainandriod.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Comparator;
+
 public class Player {
 
     @SerializedName("id")
@@ -95,5 +97,17 @@ public class Player {
 
     public void setDwarf(boolean dwarf) {
         this.dwarf = dwarf ? 1 : 0;
+    }
+
+    public static class customComparator implements Comparator<Player>{
+
+        @Override
+        public int compare(Player o1, Player o2) {
+            int p1 = o1.totalScore;
+            int p2 = o2.totalScore;
+            if(p1 == p2) return 0;
+            if(p1 > p2) return -1;
+            else return 1;
+        }
     }
 }
