@@ -83,6 +83,6 @@ public class apiRequest extends AppCompatActivity {
 
         };
 
-        MyVolley.getInstance(context1).add(request);
+        MyVolley.getInstance(this).add(request);
     }
 }

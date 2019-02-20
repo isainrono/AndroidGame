@@ -42,6 +42,13 @@ public class firstMain extends AppCompatActivity {
         Button btnPlay = findViewById(R.id.btnPlay);
 
         Context context = firstMain.this;
+        // Con estas 2 lineas dejo sin valor al sharedPreferences en caso de necesitarlo
+        //MyToken.getInstance(context).setAuthToken("");
+        //MyToken.getInstance(context).setAuthDatas();
+
+
+        Toast.makeText(firstMain.this, "token" + MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_LONG).show();
+        Log.d("isain", "d" + MyToken.getInstance(context).getAuthToken());
 
         if(MyToken.getInstance(context).getAuthToken() != "") {
             downloadDatas();
@@ -97,6 +104,7 @@ public class firstMain extends AppCompatActivity {
     public void downloadDatas() {
         Log.d("isain", "idUser=legga" );
         Context context = firstMain.this;
+        Log.d("isain", "token " + MyToken.getInstance(context).getAuthToken());
         final String URL = String.format("https://api.flx.cat/dam2game/user?token=" + MyToken.getInstance(context).getAuthToken());
 
         final StringRequest request = new StringRequest(
@@ -106,6 +114,7 @@ public class firstMain extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 
+                        Log.d("isain", "idUser=peta" );
                         String json  = response.toString();
                         Gson gson = new Gson();
 
@@ -113,11 +122,15 @@ public class firstMain extends AppCompatActivity {
                         APIResponse <Player> apiResponse = gson.fromJson(json, typeToken);
 
                         Player selectedPlayer = apiResponse.getData();
-                        Log.d("isain", "idUser=" + selectedPlayer.getId());
-                        Log.d("isainaqui", "imagen=" + selectedPlayer.getImage());
 
-                        MyToken.setPlayerInformation(selectedPlayer);
-                        Log.d("isainaqui", "imagen=" + MyToken.getPlayer().getName());
+                        if(apiResponse.getErrorCode() == 0){
+                            MyToken.setPlayerInformation(selectedPlayer);
+                            Log.d("isainaqui", "imagen=" + MyToken.getPlayer().getName());
+                        } else {
+                            Log.d("isain", "error" + apiResponse.getErrorCode());
+                        }
+
+
                         //Picasso.get().load(selectedPlayer.getImage()).into(imageView);
 
 
@@ -155,7 +168,50 @@ public class firstMain extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
+        Context context = firstMain.this;
+        Button btnPlay = findViewById(R.id.btnPlay);
 
+        if(MyToken.getInstance(context).getAuthToken() != "") {
+            downloadDatas();
+            Toast.makeText(firstMain.this, "token"+ MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_SHORT).show();
+
+            btnPlay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(firstMain.this, PlayActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            Button btnRanking = findViewById(R.id.btnRanquing);
+            btnRanking.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(firstMain.this, RankingActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+
+            Button btnAbout = findViewById(R.id.btnAbout);
+            btnAbout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(firstMain.this, AboutActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+        } else {
+            Button btnSetting = findViewById(R.id.btnSetting);
+            btnSetting.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(firstMain.this, SettingActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override

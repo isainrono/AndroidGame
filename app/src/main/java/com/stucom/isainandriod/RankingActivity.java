@@ -169,7 +169,7 @@ public class RankingActivity extends AppCompatActivity {
             // Falta ordenar por orden
             if(!player.getName().equalsIgnoreCase("User")){
                 viewHolder.namePlayer.setText(player.getName());
-                String totalScore2 = String.valueOf(player.getLastScore());
+                String totalScore2 = String.valueOf(player.getTotalScore());
                 viewHolder.DataPlayer.setText(totalScore2);
                 Picasso.get().load(player.getImage()).into(viewHolder.ImagePlayer);
             }

@@ -34,6 +34,14 @@ public class MyToken {
         edit.apply();
     }
 
+    public void setAuthDatas(){
+        SharedPreferences prefs = context.getSharedPreferences(context.getPackageName(), MODE_PRIVATE);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString("name", "");
+        edit.putString("email", "");
+        edit.apply();
+    }
+
     public static MyToken getInstance(Context context) {
         if (instance == null) {
             instance = new MyToken(context.getApplicationContext());

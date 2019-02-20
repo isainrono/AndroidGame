@@ -2,6 +2,7 @@ package com.stucom.isainandriod;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -50,10 +51,15 @@ public class SettingActivity extends AppCompatActivity {
         imageView = findViewById(R.id.sImageUser);
         Context context = SettingActivity.this;
 
-        if(MyToken.getInstance(context).getAuthToken() != ""){
-            downloadDatas();
-        }
 
+
+        Button btnDeletePlayer = findViewById(R.id.btnDelete);
+        btnDeletePlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete();
+            }
+        });
 
         Button btnChangeDatas = findViewById(R.id.btnSaveChange);
         btnChangeDatas.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +81,19 @@ public class SettingActivity extends AppCompatActivity {
 
             }
         });
+
+        if(MyToken.getInstance(context).getAuthToken() != ""){
+            downloadDatas();
+            Log.d("isain", "nombre: " + MyToken.getInstance(context).getAuthToken());
+            edName.setText(MyToken.getPlayer().getName().toString());
+            edEmail.setFocusable(false);
+            btnRegister.setEnabled(false);
+        } else {
+            edEmail.setText("");
+            edEmail.setText("");
+            btnChangeDatas.setEnabled(false);
+            btnDeletePlayer.setEnabled(false);
+        }
     }
 
 
@@ -173,8 +192,12 @@ public class SettingActivity extends AppCompatActivity {
                             apiResponse.getData();
 
                             Context context = SettingActivity.this;
+                            Log.d("isain", "token" + apiResponse.getData());
                             MyToken.getInstance(context).setAuthToken(apiResponse.getData());
-
+                            showUserInformation(apiResponse.getData());
+                            changeDatas();
+                            Intent intent = new Intent(SettingActivity.this, firstMain.class);
+                            startActivity(intent);
 
                         } else {
 
@@ -267,10 +290,16 @@ public class SettingActivity extends AppCompatActivity {
                         Type typeToken = new TypeToken<APIResponse<Player>>() {}.getType();
                         APIResponse <Player> apiResponse = gson.fromJson(json, typeToken);
 
-                        Player selectedPlayer = apiResponse.getData();
-                        Log.d("isain", "idUser=" + selectedPlayer.getId());
-                        Log.d("isainaqui", "imagen=" + selectedPlayer.getImage());
-                        Picasso.get().load(selectedPlayer.getImage()).into(imageView);
+                        if(apiResponse.getErrorCode() == 0){
+                            Player selectedPlayer = apiResponse.getData();
+                            Log.d("isain", "idUser=" + selectedPlayer.getId());
+                            Log.d("isainaqui", "imagen=" + selectedPlayer.getImage());
+                            Picasso.get().load(selectedPlayer.getImage()).into(imageView);
+                        } else {
+                            Log.d("isain", "error" + apiResponse.getErrorCode());
+                        }
+
+
 
 
                         //sendMessage(String.valueOf(selectedPlayer.getId()));
@@ -304,9 +333,107 @@ public class SettingActivity extends AppCompatActivity {
     }
 
 
+    public void showUserInformation(String token) {
+
+        final String URL = String.format("https://api.flx.cat/dam2game/user?token="+ token);
+
+        final StringRequest request = new StringRequest(
+                Request.Method.GET,
+                URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        String json  = response.toString();
+                        Gson gson = new Gson();
+
+                        Type typeToken = new TypeToken<APIResponse<Player>>() {}.getType();
+                        APIResponse <Player> apiResponse = gson.fromJson(json, typeToken);
+
+                        Player selectedPlayer = apiResponse.getData();
+                        Log.d("isain", "idUser=" + selectedPlayer.getId());
+                        Log.d("isainaqui", "imagen=" + selectedPlayer.getImage());
+                        //Picasso.get().load(selectedPlayer.getImage()).into(ImagePlayer);
+
+                        MyToken.setPlayerInformation(selectedPlayer);
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        String message = error.toString();
+                        NetworkResponse response = error.networkResponse;
+                        if(response != null) {
+                            message = response.statusCode + " " + message;
+                        }
+
+                    }
+                }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                Context context = SettingActivity.this;
+                params.put("token", MyToken.getInstance(context).getAuthToken());
+                return params;
+            }
+
+        };
+
+        MyVolley.getInstance(this).add(request);
+    }
+
+    public void delete() {
+        final String URL = "https://api.flx.cat/dam2game/unregister";
+
+        StringRequest request = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
+                    @Override public void onResponse(String response) {
+
+
+                        String json  = response.toString();
+                        Gson gson = new Gson();
+
+                        Type typeToken = new TypeToken<APIResponse<Player>>() {}.getType();
+                        APIResponse <Player> apiResponse = gson.fromJson(json, typeToken);
 
 
 
+                        if(apiResponse.getErrorCode() == 0) {
+                            Toast.makeText(SettingActivity.this, "Usuario Eliminado", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(SettingActivity.this, firstMain.class);
+                            startActivity(intent);
+                        } else {
+
+                            Toast.makeText(SettingActivity.this, "Error con el mail", Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override public void onErrorResponse(VolleyError error) {
+                String message = error.toString();
+                NetworkResponse response = error.networkResponse;
+                if(response != null){
+                    message = response.statusCode + " " + message;
+                }
+
+                Toast.makeText(SettingActivity.this, "ERROR" + message, Toast.LENGTH_SHORT).show();
+
+
+            }
+        }) {
+            @Override protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                Context context = SettingActivity.this;
+                params.put("token", MyToken.getInstance(context).getAuthToken());
+                params.put("must_delete", "true");
+                return params;
+            }
+        };
+        MyVolley.getInstance(this).add(request);
+    }
 
 
     @Override
@@ -321,7 +448,9 @@ public class SettingActivity extends AppCompatActivity {
             edName.setText(name);
             edEmail.setText(email);
         } else {
-            edName.setText(MyToken.getPlayer().getName());
+            Log.d("isain", "nombre" + MyToken.getInstance(context).getAuthToken());
+            edName.setText(name);
+            edEmail.setText(email);
             edEmail.setFocusable(false);
             Button changes = findViewById(R.id.btnRegister);
             changes.setEnabled(false);
