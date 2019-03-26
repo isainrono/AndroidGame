@@ -16,4 +16,5 @@
     <string name="aAbout">Activity About</string>
     <string name="btnMap">Map</string>
     <string name="title_activity_player_message">player_message</string>
+    <string name="startgame">StartGame</string>
 </resources>

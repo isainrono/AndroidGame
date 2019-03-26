@@ -32,8 +32,6 @@ import java.util.Map;
 
 public class firstMain extends AppCompatActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,12 +45,12 @@ public class firstMain extends AppCompatActivity {
         //MyToken.getInstance(context).setAuthDatas();
 
 
-        Toast.makeText(firstMain.this, "token" + MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(firstMain.this, "token" + MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_LONG).show();
         Log.d("isain", "d" + MyToken.getInstance(context).getAuthToken());
 
         if(MyToken.getInstance(context).getAuthToken() != "") {
             downloadDatas();
-            Toast.makeText(firstMain.this, "token"+ MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(firstMain.this, "token"+ MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_SHORT).show();
 
             btnPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,7 +80,7 @@ public class firstMain extends AppCompatActivity {
             });
 
         } else {
-            Toast.makeText(firstMain.this, "token"+ MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(firstMain.this, "token"+ MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(firstMain.this, SettingActivity.class);
             startActivity(intent);
         }
@@ -93,6 +91,15 @@ public class firstMain extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(firstMain.this, SettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button btnGame = findViewById(R.id.btnGame);
+        btnGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(firstMain.this, GameActivity.class);
                 startActivity(intent);
             }
         });
@@ -173,7 +180,7 @@ public class firstMain extends AppCompatActivity {
 
         if(MyToken.getInstance(context).getAuthToken() != "") {
             downloadDatas();
-            Toast.makeText(firstMain.this, "token"+ MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(firstMain.this, "token"+ MyToken.getInstance(context).getAuthToken(), Toast.LENGTH_SHORT).show();
 
             btnPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
